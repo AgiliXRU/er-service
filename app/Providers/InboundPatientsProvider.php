@@ -20,14 +20,22 @@ class InboundPatientsProvider
     public function __construct($transport)
     {
         $this->transportService = $transport;
-        $this->transportService->connect();
     }
 
     public function currentInboundPatients(): array
     {
-        $listOfPatient = array();
         $xmlstr = $this->transportService->fetchInboundPatients();
         error_log("Received xml from transport service: $xmlstr");
+        return $this->getPatientsFromXml($xmlstr);
+    }
+
+    /**
+     * @param $xmlstr
+     * @return array
+     */
+    public static function getPatientsFromXml($xmlstr): array
+    {
+        $result = array();
         $xml = new SimpleXMLElement($xmlstr);
         foreach ($xml->Patient as $p) {
             $patient = new Patient();
@@ -35,10 +43,11 @@ class InboundPatientsProvider
             $patient->setAttribute('name', $p->Name);
             $patient->setAttribute('priority', $p->Priority);
             $patient->setAttribute('birthdate', $p->Birthdate);
-            array_push($listOfPatient, $patient);
+            $patient->setAttribute('condition', $p->Condition);
+            array_push($result, $patient);
         }
-        error_log("Returning inbound patients: " . count($listOfPatient));
-        return $listOfPatient;
+        error_log("Returning inbound patients: " . count($result));
+        return $result;
     }
 
 }

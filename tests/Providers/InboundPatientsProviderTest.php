@@ -10,7 +10,7 @@ class InboundPatientsProviderTest extends TestCase
 
     public function testCurrentInboundPatients()
     {
-        $inboundPatientsProvider = new InboundPatientsProvider(null);
+//        $inboundPatientsProvider = new InboundPatientsProvider(null);
 
         $xml = "<Inbound>
 <Patient>
@@ -22,7 +22,7 @@ class InboundPatientsProviderTest extends TestCase
 </Patient>
 </Inbound>";
 
-        $patients = $inboundPatientsProvider->getPatientsFromXml($xml);
+        $patients = InboundPatientsProvider::getPatientsFromXml($xml);
 
         $this->assertNotNull($patients);
         $this->assertCount(1, $patients);

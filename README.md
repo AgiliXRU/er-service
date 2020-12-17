@@ -14,3 +14,8 @@ Dependency breaking Kata
 * Test this method, make it green
 * Change test - add assert on Condition field
 * Make it green
+
+2. Expose static: Process 'Condition'
+* create previously created method static
+* change test
+

@@ -23,12 +23,13 @@ class EmergencyResponseProvider
         $this->url = $url;
         $this->port = $port;
         $this->timeout = $timeout;
-        $this->socket = null;
+        $this->socket = $this->connect();
     }
 
     function connect() {
-        $this->socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
-        socket_connect($this->socket, '104.248.47.45', $this->port);
+        $socket = socket_create(AF_INET, SOCK_STREAM, SOL_TCP);
+        socket_connect($socket, '104.248.47.45', $this->port);
+        return $socket;
     }
 
     function fetchInboundPatients(): string
