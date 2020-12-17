@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Providers\InboundPatientsProvider;
 use App\Providers\EmergencyResponseProvider;
 
@@ -15,7 +14,9 @@ class InboundPatientsController extends Controller
      */
     public function index()
     {
-        $inbound = new InboundPatientsProvider(new EmergencyResponseProvider('http://ers.sergeylobin.ru/xml/inbound.xml'));
+        $inbound = new InboundPatientsProvider(
+            new EmergencyResponseProvider(
+                'http://ers.sergeylobin.ru/xml/inbound.xml', 80, 1000));
         return $inbound->currentInboundPatients();
     }
 
