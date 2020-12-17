@@ -3,32 +3,28 @@
 
 namespace App\Console;
 
+use App\Providers\InboundPatientsSource;
+
 class AlertScanner
 {
     private $criticalPatientNotificationsSentpatient;
     const ADMIN_ON_CALL_DEVICE = "111-111-1111";
     protected $inboundProvider;
-    private $pagerSystem;
-
 
     /**
      * AlertScanner constructor.
      * @param $provider
      */
-    public function __construct($provider)
+    public function __construct(InboundPatientsSource $provider)
     {
         $this->criticalPatientNotificationsSentpatient = array();
         $this->inboundProvider = $provider;
     }
 
-    public function setPagerSystem($pagerSystem) {
-        $this->pagerSystem = $pagerSystem;
-    }
-
     public function __invoke()
     {
         error_log("Scanning for situations requiring alerting...");
-        foreach ($this->inboundProvider->getPatients() as $p) {
+        foreach ($this->inboundProvider->currentInboundPatients() as $p) {
             error_log(" PRIORITY: " . $p->getAttribute('priority'));
             if ($p->getAttribute('priority') == 'RED') {
                 error_log(" TransportId: " . $p->getAttribute('transportId'));
@@ -39,10 +35,12 @@ class AlertScanner
         }
     }
 
-    private function alertForNewCriticalPatient($patient)
+    protected function alertForNewCriticalPatient($patient)
     {
         try {
-            $this->pagerSystem->transmitRequiringAcknowledgement(self::ADMIN_ON_CALL_DEVICE, "New inbound critical patient: " .
+            $transport = PagerSystem::getTransport();
+            $transport->initialize();
+            $transport->transmitRequiringAcknowledgement(self::ADMIN_ON_CALL_DEVICE, "New inbound critical patient: " .
                 $patient->getTransportId());
             array_push($this->criticalPatientNotificationsSentpatient, $patient->getAttribute('transportId'));
         } catch (\Exception $e) {
