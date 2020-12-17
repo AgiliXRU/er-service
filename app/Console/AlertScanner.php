@@ -3,7 +3,8 @@
 
 namespace App\Console;
 
-use App\Providers\InboundPatientsSource;
+use App\Providers\InboundPatientsProvider;
+
 
 class AlertScanner
 {
@@ -15,7 +16,7 @@ class AlertScanner
      * AlertScanner constructor.
      * @param $provider
      */
-    public function __construct(InboundPatientsSource $provider)
+    public function __construct(InboundPatientsProvider $provider)
     {
         $this->criticalPatientNotificationsSentpatient = array();
         $this->inboundProvider = $provider;

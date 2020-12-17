@@ -15,8 +15,8 @@ class PhysiciansController extends Controller
      */
     public function index()
     {
-        $manager = new StaffAssignmentProvider();
-        return $result = $manager->getPhysiciansOnDuty();
+        $staffProvider = new StaffAssignmentProvider();
+        return $result = $staffProvider->getPhysiciansOnDuty();
     }
 
 

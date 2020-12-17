@@ -3,11 +3,8 @@
 
 namespace App\Providers;
 
-
 use App\Models\Bed;
-use App\Models\BedProvider;
 use App\Models\Staff;
-use App\Models\StaffProvider;
 
 class StaffAssignmentProvider
 {
@@ -32,7 +29,7 @@ class StaffAssignmentProvider
         return $this->shiftStaff;
     }
 
-    public function getBeds() : array
+    public function getBeds(): array
     {
         return $this->beds;
     }
@@ -43,7 +40,7 @@ class StaffAssignmentProvider
         foreach ($this->shiftStaff as $staff) {
             $staffAssigned = false;
             foreach ($this->bedStaffAssignments as $key => $bedListEntry) {
-                if ( in_array($staff, $bedListEntry)) {
+                if (in_array($staff, $bedListEntry)) {
                     $staffAssigned = true;
                 }
             }
@@ -52,16 +49,16 @@ class StaffAssignmentProvider
                 array_push($availableStaff, $staff);
             }
 
-            return $availableStaff;
         }
+        return $availableStaff;
     }
 
     public function getPhysiciansOnDuty(): array
     {
         $physicians = array();
-        foreach ( $this->shiftStaff as $staff ) {
+        foreach ($this->shiftStaff as $staff) {
 
-            if ($staff->getAttribute('role') == 'DOCTOR' || $staff->getAttribute('role') == 'RESIDENT') {
+            if ($staff->getAttribute('role') == 'DOCTOR') {
                 array_push($physicians, $staff);
             }
         }

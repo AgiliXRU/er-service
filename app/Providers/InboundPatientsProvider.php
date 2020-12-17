@@ -26,15 +26,6 @@ class InboundPatientsProvider
     {
         $xmlstr = $this->transportService->fetchInboundPatients();
         error_log("Received xml from transport service: $xmlstr");
-        return $this->getPatientsFromXml($xmlstr);
-    }
-
-    /**
-     * @param $xmlstr
-     * @return array
-     */
-    public static function getPatientsFromXml($xmlstr): array
-    {
         $result = array();
         $xml = new SimpleXMLElement($xmlstr);
         foreach ($xml->Patient as $p) {
@@ -43,11 +34,11 @@ class InboundPatientsProvider
             $patient->setAttribute('name', $p->Name);
             $patient->setAttribute('priority', $p->Priority);
             $patient->setAttribute('birthdate', $p->Birthdate);
-            $patient->setAttribute('condition', $p->Condition);
             array_push($result, $patient);
         }
         error_log("Returning inbound patients: " . count($result));
         return $result;
     }
+
 
 }

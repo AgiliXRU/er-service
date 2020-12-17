@@ -12,6 +12,11 @@ class Patient extends Model
 
     use HasFactory;
 
-    protected $fillable = ['transportId', 'name', 'priority', 'condition'];
+    protected $fillable = ['transportId', 'name', 'birthDate', 'priority', 'condition'];
+
+    public function getChildClassification(): int
+    {
+        return ChildClassification::calculate($this->getAttribute('birthDate'), time());
+    }
 
 }
