@@ -14,13 +14,11 @@ class ChildClassification
     const ADOLESCENT = 4;
     const UNDEFINED = 5;
 
-    public static function calculate(DateTime $birthDate,DateTime $currentDate): int
+    public static function calculate(DateTime $birthDate, DateTime $currentDate): int
     {
-        error_log($birthDate);
-        error_log($currentDate);
-
-        $daysOld = 100;// = ChronoUnit.DAYS.between(birthDate, currentDate);
-        $yearsOld = 1;// = ChronoUnit.YEARS.between(birthDate, currentDate);
+        $interval = $currentDate->diff($birthDate);
+        $daysOld = $interval->days;
+        $yearsOld = $interval->y;
 
         if (($daysOld >= 0) && ($daysOld < 30)) {
             return self::NEONATE;

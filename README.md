@@ -51,6 +51,11 @@ Dependency breaking Kata
 * rewrite test according new requirements
 * write implementation
 
-6. Sprout method:
+6. Extract&Override: Fix fluky test 
+* extract method in Patient // getCurrentDate()
+* create subclass for Patient and override getCurrentDate
+* rewrite tests using fixed dates
+
+7. Sprout method:
 
 
