@@ -1,7 +1,7 @@
 <?php
 
 
-namespace App\Http\Controllers;
+namespace App\Providers;
 
 
 use App\Models\Bed;
@@ -9,7 +9,7 @@ use App\Models\BedProvider;
 use App\Models\Staff;
 use App\Models\StaffProvider;
 
-class StaffAssignmentManager
+class StaffAssignmentProvider
 {
     private $shiftStaff;
     private $beds;
@@ -17,19 +17,14 @@ class StaffAssignmentManager
 
     /**
      * StaffAssignmentManager constructor.
-     * @param StaffProvider $staff
-     * @param BedProvider $bedRepo
      */
-    public function __construct(StaffProvider $staff, BedProvider $bedRepo)
+    public function __construct()
     {
+        $staff = new Staff();
         $this->shiftStaff = $staff->getShiftStaff();
+        $bedRepo = new Bed();
         $this->beds = $bedRepo->getAllBeds();
         $this->bedStaffAssignments = array();
-    }
-
-    public static function create(): StaffAssignmentManager
-    {
-        return new StaffAssignmentManager(new Staff(), new Bed());
     }
 
     public function getShiftStaff(): array

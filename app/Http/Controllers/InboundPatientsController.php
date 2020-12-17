@@ -3,9 +3,8 @@
 namespace App\Http\Controllers;
 
 
-use App\Models\Patient;
-use Illuminate\Support\Facades\Http;
-use SimpleXMLElement;
+use App\Providers\InboundPatientsProvider;
+use App\Providers\EmergencyResponseProvider;
 
 class InboundPatientsController extends Controller
 {
@@ -16,33 +15,8 @@ class InboundPatientsController extends Controller
      */
     public function index()
     {
-        $xmlstr = Http::get('http://ers.sergeylobin.ru/xml/inbound.xml')->body();
-        error_log("xml response: $xmlstr");
-
-        $result = $this->makeResponse($xmlstr);
-        return $result;
+        $inbound = new InboundPatientsProvider(new EmergencyResponseProvider('http://ers.sergeylobin.ru/xml/inbound.xml'));
+        return $inbound->currentInboundPatients();
     }
-
-    /**
-     * @param string $xmlstr
-     * @return array
-     */
-    public static function makeResponse(string $xmlstr): array
-    {
-        $result = array();
-        $xml = new SimpleXMLElement($xmlstr);
-        foreach ($xml->Patient as $p) {
-            $patient = new Patient();
-            $patient->setAttribute('transportId', $p->TransportId);
-            $patient->setAttribute('name', $p->Name);
-            $patient->setAttribute('priority', $p->Priority);
-            $patient->setAttribute('birthdate', $p->Birthdate);
-            $patient->setAttribute('condition', $p->Condition);
-            array_push($result, $patient);
-        }
-        error_log("Returning inbound patients: " . count($result));
-        return $result;
-    }
-
 
 }

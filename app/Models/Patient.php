@@ -12,6 +12,6 @@ class Patient extends Model
 
     use HasFactory;
 
-    protected $fillable = ['transportId', 'name'];
+    protected $fillable = ['transportId', 'name', 'priority', 'condition'];
 
 }

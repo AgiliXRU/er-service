@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Game;
-use App\Models\Patient;
-use Illuminate\Support\Facades\Http;
-use SimpleXMLElement;
+
+
+use App\Providers\StaffAssignmentProvider;
 
 class PhysiciansController extends Controller
 {
@@ -16,7 +15,7 @@ class PhysiciansController extends Controller
      */
     public function index()
     {
-        $manager = StaffAssignmentManager::create();
+        $manager = new StaffAssignmentProvider();
         return $result = $manager->getPhysiciansOnDuty();
     }
 
